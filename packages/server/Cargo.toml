@@ -85,10 +85,10 @@ tokio = { workspace = true, features = ["rt", "sync", "rt-multi-thread", "macros
 dioxus = { workspace = true, features = ["fullstack"] }
 
 [features]
-default = ["devtools", "full"]
+default = ["devtools", "full", "ssr"]
 full = [
     "core",
-    "server_fn/ssr",
+    # "server_fn/ssr",
     "dep:tower-http",
     "default-tls",
     "dep:tower",
@@ -100,9 +100,10 @@ full = [
 ]
 core = [
     "server_fn/axum-no-default",
-    "server_fn/ssr",
+    # "server_fn/ssr",
     "document",
 ]
+ssr = ["server_fn/ssr"]
 devtools = ["dep:dioxus-devtools"]
 document = ["dep:dioxus-interpreter-js"]
 default-tls = ["server_fn/default-tls"]
