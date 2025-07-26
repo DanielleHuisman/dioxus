@@ -55,30 +55,42 @@
 //! }
 //! ```
 
+#[cfg(feature = "full")]
 pub mod config;
 pub mod context;
 
+#[cfg(feature = "full")]
 mod document;
+#[cfg(feature = "full")]
 mod render;
+#[cfg(feature = "full")]
 mod server;
+#[cfg(feature = "full")]
 mod streaming;
 
+#[cfg(feature = "full")]
 pub(crate) use config::*;
 
+#[cfg(feature = "full")]
 pub use crate::config::{ServeConfig, ServeConfigBuilder};
 pub use crate::context::Axum;
+#[cfg(feature = "full")]
 pub use crate::render::{FullstackHTMLTemplate, SSRState};
+#[cfg(feature = "full")]
 pub use crate::server::*;
+#[cfg(feature = "full")]
 pub use config::*;
 pub use context::{
     extract, server_context, with_server_context, DioxusServerContext, FromContext,
     FromServerContext, ProvideServerContext,
 };
+#[cfg(feature = "full")]
 pub use dioxus_isrg::{IncrementalRenderer, IncrementalRendererConfig};
+#[cfg(feature = "full")]
 pub use document::ServerDocument;
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "full", not(target_arch = "wasm32")))]
 mod launch;
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "full", not(target_arch = "wasm32")))]
 pub use launch::{launch, launch_cfg};
