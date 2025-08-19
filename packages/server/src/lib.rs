@@ -60,14 +60,17 @@ pub mod context;
 
 mod document;
 mod render;
+#[cfg(feature = "full")]
 mod server;
 mod streaming;
 
+#[cfg(feature = "full")]
 pub(crate) use config::*;
 
 pub use crate::config::{ServeConfig, ServeConfigBuilder};
 pub use crate::context::Axum;
 pub use crate::render::{FullstackHTMLTemplate, SSRState};
+#[cfg(feature = "full")]
 pub use crate::server::*;
 pub use config::*;
 pub use context::{
@@ -77,8 +80,8 @@ pub use context::{
 pub use dioxus_isrg::{IncrementalRenderer, IncrementalRendererConfig};
 pub use document::ServerDocument;
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "full", not(target_arch = "wasm32")))]
 mod launch;
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "full", not(target_arch = "wasm32")))]
 pub use launch::{launch, launch_cfg};

@@ -34,7 +34,7 @@ where
     Fut: Future + 'static,
     Fut::Output: Send + 'static,
 {
-    #[cfg(not(target_arch = "wasm32"))]
+    #[cfg(all(feature = "full", not(target_arch = "wasm32")))]
     {
         use tokio_util::task::LocalPoolHandle;
         static TASK_POOL: std::sync::OnceLock<LocalPoolHandle> = std::sync::OnceLock::new();
@@ -47,7 +47,7 @@ where
 
         pool.spawn_pinned(f)
     }
-    #[cfg(target_arch = "wasm32")]
+    #[cfg(any(not(feature = "full"), target_arch = "wasm32"))]
     {
         tokio::task::spawn_local(f())
     }
@@ -662,11 +662,11 @@ impl FullstackHTMLTemplate {
 
         to.write_str(&index.close_head)?;
 
-        // // #[cfg(feature = "document")]
-        // {
-        use dioxus_interpreter_js::INITIALIZE_STREAMING_JS;
-        write!(to, "<script>{INITIALIZE_STREAMING_JS}</script>")?;
-        // }
+        #[cfg(feature = "document")]
+        {
+            use dioxus_interpreter_js::INITIALIZE_STREAMING_JS;
+            write!(to, "<script>{INITIALIZE_STREAMING_JS}</script>")?;
+        }
 
         Ok(())
     }

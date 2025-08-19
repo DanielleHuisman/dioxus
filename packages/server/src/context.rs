@@ -34,6 +34,7 @@ impl AtomicResponsePartsModified {
             .store(modified.as_u32(), std::sync::atomic::Ordering::Relaxed);
     }
 
+    #[cfg(feature = "full")]
     fn is_modified(&self, part: ResponsePartsModified) -> bool {
         self.modified.load(std::sync::atomic::Ordering::Relaxed) & (1 << part as usize) != 0
     }
@@ -391,6 +392,7 @@ mod server_fn_impl {
         }
 
         /// Copy the response parts to a response and mark this server context as sent
+        #[cfg(feature = "full")]
         pub(crate) fn send_response<B>(&self, response: &mut http::response::Response<B>) {
             self.response_sent
                 .store(true, std::sync::atomic::Ordering::Relaxed);
